@@ -3,5 +3,6 @@ authors = ["too-r <william@huddie.net>"]
 name = "spotify"
 version = "0.1.0"
 [dependencies]
+chrono = "*"
 hyper = "*"
 websocket = "*"
