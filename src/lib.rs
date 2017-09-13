@@ -20,4 +20,8 @@ impl Spotify {
             client: hyper::Client::new(),
         }
     }
+
+    fn request<'a, F: Fn() -> hyper::client::RequestBuilder<'a>>(&self, url: &str, f: F) -> Result<hyper::client::Response> {
+        
+    }
 }
