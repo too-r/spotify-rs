@@ -1,6 +1,7 @@
+
+extern crate chrono;
 extern crate hyper;
 extern crate websocket;
-extern crate chrono;
 
 macro_rule! api_concat {
     ($e:expr) => (concat!("https://api.spotify.com/v1", $e))
