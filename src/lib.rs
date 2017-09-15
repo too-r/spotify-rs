@@ -2,6 +2,8 @@ extern crate chrono;
 extern crate hyper;
 extern crate websocket;
 
+pub use chrono::prelude::*;
+
 macro_rule! api_concat {
     ($e:expr) => (concat!("https://api.spotify.com/v1", $e))
 }
@@ -22,6 +24,6 @@ impl Spotify {
     }
 
     fn request<'a, F: Fn() -> hyper::client::RequestBuilder<'a>>(&self, url: &str, f: F) -> Result<hyper::client::Response> {
-        
+       self.ratelimits.pre_check(url);
     }
 }
