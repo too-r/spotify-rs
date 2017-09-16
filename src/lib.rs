@@ -2,6 +2,8 @@ extern crate chrono;
 extern crate hyper;
 extern crate websocket;
 
+use std::path::Path;
+use std::io::prelude::*; //Import the Read trait and other stuff easily.
 pub use chrono::prelude::*;
 
 macro_rule! api_concat {
@@ -23,7 +25,12 @@ impl Spotify {
         }
     }
 
-    fn request<'a, F: Fn() -> hyper::client::RequestBuilder<'a>>(&self, url: &str, f: F) -> Result<hyper::client::Response> {
-       self.ratelimits.pre_check(url);
+    fn get_token(path: Path) -> String {
+        let mut buf = String::new();
+        
+        //Open the file containing our client ID.
+        let mut f = File::open(path).unwrap();
+
+        let mut client_id = f.read_to_string(&mut buf).unwrap().trim(); //Get rid of the newline character.
     }
 }
