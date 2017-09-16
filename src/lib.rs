@@ -32,10 +32,18 @@ impl Spotify {
         //Open the file containing our client ID.
         let mut f = File::open(path).unwrap();
 
-        let mut client_id = f.read_to_string(&mut buf).unwrap().trim(); //Get rid of the newline character.
-
+        let mut client_id = f.read_to_string(&mut buf).unwrap().trim(); //Get rid of the newline character. This assumes the file containing the client id has only contains one line.
+        
+        //Format the request string using the client id.
         let mut request = format!("https://accounts.spotify.com/authorize/?client_id={}&response_type=code&redirect_uri=https%3A%2F%2Flocalhost:8000", client_id);
 
-        let mut resp = reqwest::get(request).unwrap();
+        //Request an access code.
+        let mut resp = reqwest::get(request);
+
+        match resp {
+            Ok(r) => {
+                let mut 
+            }
+        }
     }
 }
