@@ -13,8 +13,7 @@ macro_rule! api_concat {
 
 //Our struct describing Spotify.
 pub struct Spotify {
-    ratelimits: RateLimits,
-    client: hyper::Client,
+    token: String,
 }
 
 #[derive(Deserialize)]
@@ -27,14 +26,7 @@ struct AuthResponse {
 }
 
 impl Spotify {
-    //Create a new instance of the struct.
-    pub fn new() -> Self {
-        Spotify {
-            ratelimits: RateLimits::new(),
-            client: hyper::Client::new(),
-        }
-    }
-
+    //Retrieve data we can use to authenticate with from the Spotify accounts service.
     fn get_token(path: Path) -> AuthResponse {
         #[derive(Deserialize)]
         struct AuthCode {
