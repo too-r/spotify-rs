@@ -17,6 +17,15 @@ pub struct Spotify {
     client: hyper::Client,
 }
 
+#[derive(Deserialize)]
+struct AuthResponse {
+    access_token: String,
+    token_type: String,
+    scope: String,
+    expires_in: i32,
+    refresh_token: String,
+}
+
 impl Spotify {
     //Create a new instance of the struct.
     pub fn new() -> Self {
@@ -26,19 +35,10 @@ impl Spotify {
         }
     }
 
-    fn get_token(path: Path) -> String {
+    fn get_token(path: Path) -> AuthResponse {
         #[derive(Deserialize)]
         struct AuthCode {
             code: String,
-        }
-        
-        #[derive(Deserialize)]
-        struct AuthResponse {
-            access_token: String,
-            token_type: String,
-            scope: String,
-            expires_in: i32,
-            refresh_token: String,
         }
 
         let mut buf = String::new();
@@ -65,12 +65,18 @@ impl Spotify {
                 let client = reqwest::Client::new().unwrap();
                 match client.post().body(body).send() {
                     Ok(auth) => {
-                        let response = serde_json::from_str::<AuthReponse>(&auth).unwrap();
-                        return (reponse.access_token, response.refresh_token).into_vec();
+                        match serde_json::from_str::<AuthResponse>(&auth) {
+                            Ok(a) = a
+                            Err(error) {
+                                println!("Error parsing JSON to the struct. This error was caused by {:?}", err.category());
+                                break
+                            }
+                        }
                     }
                     Err(e) => format!("{:?}", e)
                 }
             }
+            Err(err) => break err,
         }
     }
 }
