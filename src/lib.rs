@@ -2,6 +2,7 @@ extern crate chrono;
 extern crate hyper;
 extern crate websocket;
 extern crate reqwest;
+extern crate base64;
 
 use std::path::Path;
 use std::io::prelude::*; //Import the Read trait and other stuff easily.
@@ -49,8 +50,8 @@ impl Spotify {
         match resp {
             Ok(r) => {
                 let mut auth_struct = serde_json::from_str::<AuthCode>(&r).unwrap();
-                
-                let post_url = format!("grant_type=authorization_code code={} redirect_uri=localhost:8000")
+
+                let post_url = format!("grant_type=authorization_code code={} redirect_uri=localhost:8000");
 
                 let body = reqwest::Body::new(post_url).unwrap();
 

@@ -3,6 +3,7 @@ authors = ["too-r <william@huddie.net>"]
 name = "spotify"
 version = "0.1.0"
 [dependencies]
+base64 = "*"
 chrono = "*"
 hyper = "*"
 reqwest = "*"
