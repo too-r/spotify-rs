@@ -1,6 +1,6 @@
 extern crate chrono;
 extern crate hyper;
-extern crate websocketi;
+extern crate websocket;
 extern crate reqwest;
 
 use std::path::Path;
@@ -27,12 +27,16 @@ impl Spotify {
     }
 
     fn get_token(path: Path) -> String {
+        struct AuthCode {
+            code: String,
+        }
+
         let mut buf = String::new();
         
         //Open the file containing our client ID.
         let mut f = File::open(path).unwrap();
 
-        let mut client_id = f.read_to_string(&mut buf).unwrap().trim(); //Get rid of the newline character. This assumes the file containing the client id has only contains one line.
+        let mut client_id = f.read_to_string(&mut buf).unwrap().trim(); //Get rid of the newline character. This assumes the file containing the client id only contains one line.
         
         //Format the request string using the client id.
         let mut request = format!("https://accounts.spotify.com/authorize/?client_id={}&response_type=code&redirect_uri=https%3A%2F%2Flocalhost:8000", client_id);
@@ -42,7 +46,8 @@ impl Spotify {
 
         match resp {
             Ok(r) => {
-                let mut 
+                let mut auth_struct = serde_json::from_str::<AuthCode>(&r).unwrap();
+                
             }
         }
     }
