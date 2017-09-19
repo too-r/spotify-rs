@@ -8,9 +8,7 @@ use std::path::Path;
 use std::io::prelude::*; //Import the Read trait and other stuff easily.
 pub use chrono::prelude::*;
 
-macro_rule! api_concat {
-    ($e:expr) => (concat!("https://api.spotify.com/v1", $e))
-}
+type Result<T> = Result<T, >;
 
 //Our struct describing Spotify.
 pub struct Spotify {
@@ -51,25 +49,19 @@ impl Spotify {
             Ok(r) => {
                 let mut auth_struct = serde_json::from_str::<AuthCode>(&r).unwrap();
 
-                let post_url = format!("grant_type=authorization_code code={} redirect_uri=localhost:8000");
+                let post_url = format!("grant_type=authorization_code code={} redirect_uri=localhost:8000", auth_struct.code);
+                let encoded_secret = format!()
 
                 let body = reqwest::Body::new(post_url).unwrap();
 
                 let client = reqwest::Client::new().unwrap();
-                match client.post().body(body).send() {
-                    Ok(auth) => {
-                        match serde_json::from_str::<AuthResponse>(&auth) {
-                            Ok(a) = a
-                            Err(error) {
-                                println!("Error parsing JSON to the struct. This error was caused by {:?}", err.category());
-                                break
-                            }
-                        }
-                    }
-                    Err(e) => format!("{:?}", e)
-                }
+                let post = client.post()
+                    .body(body)
+                    .headers();
             }
-            Err(err) => break err,
+        
+            Err(err) 
         }
     }
 }
+
