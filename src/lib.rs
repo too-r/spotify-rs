@@ -60,7 +60,18 @@ impl Spotify {
                     .headers();
             }
         
-            Err(err) 
+            Err(err) => {
+                println!("Receive error: {:?}", err);
+                
+                //Return a dummy response
+                AuthResponse {
+                    access_token: String::new(),
+                    token_type: String::new(),
+                    scope: String::new(),
+                    expires_in: 1,
+                    refresh_token: String::new(),
+                }
+            }
         }
     }
 }
