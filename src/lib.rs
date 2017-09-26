@@ -25,6 +25,25 @@ struct AuthResponse {
 }
 
 impl Spotify {
+    pub fn new(&self) -> Self {
+        let curr_time = Utc::now().timestamp();
+
+        let auth_response = get_token();
+        
+        let token = auth_response.access_token;
+
+        loop {
+            let remaining = auth_response.expires_in;
+            
+            //If the token has expired, try and get a new one.
+            if remaining < 0 && remaining > -1 {
+                //Get a refresh token we can use
+                let refresh = auth_response.refresh_token;
+                
+            }
+        }
+    }
+
     //Retrieve data we can use to authenticate with from the Spotify accounts service.
     fn get_token(path: Path) -> AuthResponse {
         #[derive(Deserialize)]
@@ -49,7 +68,7 @@ impl Spotify {
             Ok(r) => {
                 let mut auth_struct = serde_json::from_str::<AuthCode>(&r).unwrap();
 
-                let post_url = format!("grant_type=authorization_code code={} redirect_uri=localhost:8000", auth_struct.code);
+                let post_url = format!("https://accounts.spotify.com/api/token/?grant_type=authorization_code&code={}&redirect_uri=localhost:8000", auth_struct.code);
                 let encoded_secret = format!()
 
                 let body = reqwest::Body::new(post_url).unwrap();
