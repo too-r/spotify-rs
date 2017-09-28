@@ -19,3 +19,31 @@ mod Scopes {
 struct Authenticator {
     config: &Config,
 }
+
+impl Authenticator {
+    pub fn new(&mut self, redirect: String, scopes: Vec<String>) -> Self {
+        let cfg: Config;
+        
+        let client_id = match env::var("SPOTIFY_CLIENT") {
+            Ok(i) => i,
+            Err(err) => err,
+        };
+
+        let client_secret = match env::var("SPOTIFY_CLIENT_SECRET") {
+            Ok(s) => s,
+            Err(err) => err,
+        };
+        
+        if client_id.is_err() && client_secret.is_err() {
+            println!("Errors encountered while retrieving client identification. {} {}", client_id.description(), client_secret.description());
+        } else {
+            cfg = Config {
+                client_id: client_id,
+                client_secret: client_secret,
+                endpoint: 
+                redirect: redirect,
+                scopes: scopes,
+            }
+        }
+    }
+}
