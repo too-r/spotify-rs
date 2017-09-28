@@ -35,7 +35,7 @@ impl Authenticator {
         };
         
         if client_id.is_err() && client_secret.is_err() {
-            println!("Errors encountered while retrieving client identification. {} {}", client_id.description(), client_secret.description());
+            println!("Errors encountered while retrieving client identification. {} {}", client_id.unwrap_err().description(), client_secret.unwrap_err().description());
         } else {
             cfg = Config {
                 client_id: client_id,
@@ -44,6 +44,10 @@ impl Authenticator {
                 redirect: redirect,
                 scopes: scopes,
             }
+        }
+
+        Authenticator {
+            config: &cfg,
         }
     }
 }
